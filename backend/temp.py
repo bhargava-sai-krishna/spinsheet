@@ -2,19 +2,21 @@ import psycopg2
 import pandas as pd
 from io import BytesIO
 
-conn = psycopg2.connect(host="localhost", dbname="postgres", user="postgres", password="sbskln2412S", port=5432)
+conn = psycopg2.connect(host="localhost", dbname="spinsheet", user="postgres", password="sbskln2412S", port=5432)
 cursor = conn.cursor()
 
-cursor.execute("SELECT FileName, FileType, FileData FROM Files WHERE FileID = 2")
+cursor.execute("select filedata from files where id='CLI001' and filename='airquality.xlsx'")
 record = cursor.fetchone()
 
-file_name, file_type, file_data = record
 
-# Convert binary data to a DataFrame
-df = pd.read_excel(BytesIO(file_data))
+# Extract the BytesIO object from the tuple
+bytes_data = record[0]
 
-# Now you can work with the DataFrame (df) as needed
+# Use BytesIO to create a BytesIO object
+bytes_io = BytesIO(bytes_data)
+
+# Read the Excel file from BytesIO
+df = pd.read_excel(bytes_io)
+
+# Now you can work with the DataFrame 'df'
 print(df)
-
-cursor.close()
-conn.close()
