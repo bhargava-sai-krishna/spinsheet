@@ -37,8 +37,7 @@ export class Signin extends Component {
             console.log("hahaha: "+response.data.flag);
             if (response.data.flag !== 'False') 
             {
-                const jsonData = response.data;
-                this.setState({ userRole: 'client', name: jsonData.name });
+                this.setState({ userRole: 'client', name: response.data.flag });
             } else {
               console.log('Enter correct details');
             }
@@ -62,20 +61,34 @@ export class Signin extends Component {
       return <Client userId={userId} name={name}/>;
     }
     return (
-      <div>
-        <form onSubmit={this.submitHandler}>
+      <div className='something'>
+          <div className='box'>
+          <form onSubmit={this.submitHandler} action='POSTS' className='wrapper'>
             <h2>Sign In</h2>
-            <h2>User Id</h2>
-            <input type='text' name='userId' value={userId} onChange={this.changeHandler} />
-            <h2>Password</h2>
-            <input type={this.state.showPassword ? 'text' : 'password'} name='password' value={password} onChange={this.changeHandler} />
-            <input type="checkbox" onChange={this.togglePasswordVisibility} checked={this.state.showPassword}/>
-            <br />
-            Show Password
-            <br />
-            <button type='submit'>Submit</button>
-            <button onClick={this.toSignup}>Signup</button>
-        </form>
+            <div className='inputbox'>
+              <input type='text' name='userId' value={userId} onChange={this.changeHandler} />
+              <span>UserName</span>
+              <i></i>
+            </div>
+            <div className='inputbox'>
+              <input type={this.state.showPassword ? 'text' : 'password'} name='password' value={password} onChange={this.changeHandler} />
+              <span>Password</span>
+              <i></i>
+            </div>
+            <br/>
+            <br/>
+            <div className='checker'>
+              <input type="checkbox" onChange={this.togglePasswordVisibility} checked={this.state.showPassword}/>
+              <label htmlFor="showPasswordCheckbox">{this.state.showPassword ? 'Hide Password' : 'Show Password'}</label>
+            </div>
+            <div>
+              <button className="SubmitButton" type='submit'>Submit</button>
+            </div>
+            <div>
+              <button className="SubmitButton" onClick={this.toSignup}>Signup</button>
+            </div>
+          </form>
+        </div>
       </div>
     )
   }

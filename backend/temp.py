@@ -5,18 +5,19 @@ from io import BytesIO
 conn = psycopg2.connect(host="localhost", dbname="spinsheet", user="postgres", password="sbskln2412S", port=5432)
 cursor = conn.cursor()
 
-cursor.execute("select filedata from files where id='CLI001' and filename='airquality.xlsx'")
+cursor.execute("SELECT filedata FROM files WHERE id='CLI001' AND filename='WineQT.csv'")
 record = cursor.fetchone()
 
+if record is not None:
+    bytes_data = record[0]
+    bytes_io = BytesIO(bytes_data)
+    df = pd.read_csv(bytes_io)
 
-# Extract the BytesIO object from the tuple
-bytes_data = record[0]
+    # Now you can work with the DataFrame 'df'
+    print(df)
+else:
+    print("No record found.")
 
-# Use BytesIO to create a BytesIO object
-bytes_io = BytesIO(bytes_data)
-
-# Read the Excel file from BytesIO
-df = pd.read_excel(bytes_io)
-
-# Now you can work with the DataFrame 'df'
-print(df)
+# Close the cursor and connection
+cursor.close()
+conn.close()

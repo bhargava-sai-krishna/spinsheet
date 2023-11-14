@@ -1,6 +1,4 @@
 import psycopg2
-import json
-import s
 conn = psycopg2.connect(
     host="localhost",
     dbname="spinsheet",
@@ -31,4 +29,3 @@ cursor.execute("INSERT INTO files (id, FileName, FileType, FileData) VALUES (%s,
 conn.commit()
 cursor.close()
 conn.close()
-

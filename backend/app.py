@@ -5,6 +5,8 @@ import s
 import json
 import pandas as pd
 from io import BytesIO
+import dataSignup
+import sendToDataBase
 
 app=Flask(__name__)
 CORS(app)
@@ -66,6 +68,24 @@ def GetExcel():
         df=pd.read_csv(bytes_io)
     json_data=df.to_json(orient='records')
     return json_data
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    creds = request.get_json()
+    userName = creds['userName']
+    password = creds['password']
+    email = creds['email']
+    dataSignup.addClient(userName, password, email)
+    return 'done'
+
+@app.route('/UpdateExcel',methods=['GET','POST'])
+def updater():
+    dets=request.get_json()
+    userId=dets['userId']
+    table_data = dets['tableData'][0]
+    sendToDataBase.fun(userId,table_data)
+    return 'done'
+
 
 if __name__=="__main__":
     app.run(debug=True)
